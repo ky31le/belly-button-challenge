@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Belly Button Biodiversity Dashboard</title>
+    <!-- Include Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <!-- Include Bootstrap CSS (optional) -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Belly Button Biodiversity Dashboard</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <div id="bubble-chart"></div>
+            </div>
+            <div class="col-md-6">
+                <div id="sample-metadata"></div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <label for="sample-dropdown">Select Sample:</label>
+                <select id="sample-dropdown" class="form-control"></select>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data from samples.json (replace with your actual data)
+        var data = {
+            "samples": [
+                {
+                    "id": "940",
+                    "otu_ids": [1167, 2859, 482, /* ... */],
+                    "sample_values": [163, 126, 113, /* ... */],
+                    "otu_labels": ["Bacteria;Bacteroides;Bacteroidia;Bacteroidales;Bacteroidaceae;Bacteroides", /* ... */]
+                },
+               
+            ],
+            "metadata": [
+                {
+                    "id": 940,
+                    "age": 24,
+                    "bbtype": "I",
+                    "ethnicity": "Caucasian",
+                    "gender": "F",
+                    "location": "Beaufort/NC",
+                    "sampleid": 940
+                },
+                // Add more metadata here...
+            ],
+            "names": ["940", "941", "943", /* ... */]
+        };
+
+        // Function to create the bubble chart
+        function createBubbleChart(sampleId) {
+            var selectedSample = data.samples.find(sample => sample.id === sampleId);
+            // Add code to create the bubble chart using Plotly.js
+            // Use selectedSample.otu_ids, selectedSample.sample_values, etc.
+        }
+
+        // Function to display sample metadata
+        function displaySampleMetadata(sampleId) {
+            var selectedMetadata = data.metadata.find(metadata => metadata.id === parseInt(sampleId));
+            var metadataHtml = Object.entries(selectedMetadata).map(([key, value]) =>
+                `<strong>${key}:</strong> ${value}<br>`
+            ).join('');
+            document.getElementById('sample-metadata').innerHTML = `<h3>Sample Metadata:</h3>${metadataHtml}`;
+        }
+
+        // Populate the sample dropdown
+        var sampleDropdown = document.getElementById('sample-dropdown');
+        data.names.forEach(sampleName => {
+            var option = document.createElement('option');
+            option.value = sampleName;
+            option.textContent = sampleName;
+            sampleDropdown.appendChild(option);
+        });
+
+        // Attach event listener to the sample dropdown
+        sampleDropdown.addEventListener('change', function() {
+            var selectedSample = sampleDropdown.value;
+            createBubbleChart(selectedSample);
+            displaySampleMetadata(selectedSample);
+        });
+
+        // Initial data load (replace with actual data)
+        createBubbleChart(data.names[0]);
+        displaySampleMetadata(data.names[0]);
+    </script>
+</body>
+</html>
